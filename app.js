@@ -25,31 +25,11 @@ app.set('view engine', 'ejs');
 // app.set('view', 'myviews'); // by default above
 
 
-
-
-
 // middleware & static files
 app.use(express.static('public'));
 app.use(morgan('dev'));
-
-// mongoose and mongo sandbox routes
-app.get('/add-blog', (req, res) => {
-    const blog = new Blog({
-        title: 'new blog2',
-        snippet: 'about new blog2',
-        body: 'body of the new blog2'
-    });
-
-    // async task. will take some to do
-    blog.save()
-        .then((result) => {
-            res.send(result);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-
-});
+// to access the post body
+app.use(express.urlencoded( {extended: true} ))
 
 app.get('/all-blogs', (req, res) => {
     Blog.find()
@@ -61,15 +41,6 @@ app.get('/all-blogs', (req, res) => {
         });
 });
 
-app.get('/single-blog', (req, res) => {
-    Blog.findById('60d7944694fa0752d03a929b')
-        .then((result) => {
-            res.send(result);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-})
 
 
 app.get('/', (req, res) => {
@@ -94,7 +65,43 @@ app.get('/blogs', (req, res) => {
         .catch((err) => {
             console.log(err);
         });
-})
+});
+
+app.post('/add-blog', (req, res) => {
+    console.log(req.body);
+    const blog = new Blog(req.body);
+    blog.save()
+        .then((result) => {
+            res.redirect('/blogs');
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+app.get('/blog/:id', (req, res) => {
+    const id = req.params.id;
+    console.log(id);
+    Blog.findById(id)
+      .then(result => {
+        res.render('details', { blog: result, title: 'Blog Details' });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+});
+
+app.delete('/blog/:id', (req,res)=> {
+    const id = req.params.id;
+    console.log('in delte', id);
+    Blog.findByIdAndDelete(id)
+    .then(result => {
+        res.json({redirect: '/blogs'})
+    })
+    .catch(err => {
+        console.log(err);
+    });
+});
 
 app.get('/about', (req, res) => {
     //res.send('<p> About page </p>');

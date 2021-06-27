@@ -78,9 +78,40 @@ h3 {
 
 
 /* index styles */
+.blogs a{
+    display: block;
+    margin: 40px 0;
+    padding-left:30px;
+    border-left: 6px solid seagreen;
+}
+.blogs a:hover h3{
+    color: rgb(124, 23, 43);
+}
 
 
 /* details styles */
+/* details styles */
+.details{
+    position: relative;
+    display: block;
+    margin: 40px 0;
+    padding-left:30px;
+    border-left: 6px solid rgb(124, 23, 43);
+
+  }
+.delete{
+    color: crimson;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 50%;
+    padding: 8px;
+}
+.delete:hover{
+    cursor: pointer;
+    box-shadow: 1px 2px 3px rgba(0,0,0,0.2);
+    background-color:whitesmoke;
+}
 
 
 /* create styles */

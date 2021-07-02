@@ -24,7 +24,7 @@ mongoose.connect(dbURI, {
     .then((result) => {
         console.log('connected to the DB');
         //listen for requests
-        app.listen(3000);
+        app.listen(process.env.PORT || 3000);
     })
     .catch((err) => {
         console.log(err);

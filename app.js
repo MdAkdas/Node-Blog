@@ -1,6 +1,7 @@
 const express = require('express')
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
 const blogRoutes = require('./routes/blogRoutes');
 
@@ -8,10 +9,18 @@ const blogRoutes = require('./routes/blogRoutes');
 const app = express();
 
 // connection to mongo db
-const dbURI = 'mongodb+srv://netninja:admin1234@node-tut.gwk9i.mongodb.net/node-tut?retryWrites=true&w=majority'
+dotenv.config({path:'./config.env'});
+
+const dbURI = process.env.DATABASE
+
 
 // it is async task
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(dbURI, { 
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify:false,
+    useUnifiedTopology:true
+ })
     .then((result) => {
         console.log('connected to the DB');
         //listen for requests
